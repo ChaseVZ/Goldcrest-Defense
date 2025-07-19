@@ -26,7 +26,7 @@ public class BuildManager : MonoBehaviour
 
     public Canvas UpgradeMenu;
     public Canvas BuyMenu;
-    public Canvas TraderMenu;
+    public Canvas TraderMenu = null;
 
     // tutorial features
     public bool block1 = false;
@@ -110,7 +110,7 @@ public class BuildManager : MonoBehaviour
             }
             else {
                 if (nodeTaken && !node.GetComponent<Node>().getTowerBuilt()) {
-                    if (node.GetComponent<Node>().TRADER_NODE && GameManager.instance.TraderActive())
+                    if (node.GetComponent<Node>().TRADER_NODE && GameManager.instance.TraderActive() && TraderMenu != null)
                         showTraderMenu();
                     else
                         showBuyMenu(); 
@@ -133,7 +133,7 @@ public class BuildManager : MonoBehaviour
     {
         UpgradeMenu.gameObject.SetActive(false);
         BuyMenu.gameObject.SetActive(false);
-        TraderMenu.gameObject.SetActive(false);
+        if (TraderMenu != null) { TraderMenu.gameObject.SetActive(false); }
         purchaseMode = false;
         towerToBuild = null;
     }
@@ -149,14 +149,14 @@ public class BuildManager : MonoBehaviour
     {
         BuyMenu.gameObject.SetActive(true);
         UpgradeMenu.gameObject.SetActive(false);
-        TraderMenu.gameObject.SetActive(false);
+        if (TraderMenu != null) { TraderMenu.gameObject.SetActive(false); }
     }
 
     void showUpgradeMenu()
     {
         BuyMenu.gameObject.SetActive(false);
         UpgradeMenu.gameObject.SetActive(true);
-        TraderMenu.gameObject.SetActive(false);
+        if (TraderMenu != null) { TraderMenu.gameObject.SetActive(false); }
         UpgradeMenu.GetComponent<UniversalUpgradeMenu>().UpdateText(towerBuilt);
 
         if (towerBuilt.getTowerType() == TowerType.Archer) { UpgradeMenuImage.sprite = archerImage; }

@@ -12346,6 +12346,7 @@ MonoBehaviour:
   _speed: 20
   _gravity: 9.81
   _gravityModifier: 5
+  maximumSpeed: 40
   RedAbilityRing: {fileID: 1840966295}
   BlueAbilityRing: {fileID: 1669791414}
   GreenAbilityRing: {fileID: 904302751}
@@ -22486,6 +22487,7 @@ MonoBehaviour:
   x2_speed_button: {fileID: 0}
   abilitiesGO: {fileID: 0}
   Trader: {fileID: 0}
+  traderFrequency: 1
 --- !u!82 &973616992
 AudioSource:
   m_ObjectHideFlags: 0
@@ -22630,6 +22632,7 @@ MonoBehaviour:
   popSound: {fileID: 1062414691}
   resourceChest: {fileID: 6574029496898749320, guid: a863c3ffeb0ce2f4e8c621009fb9d2ef, type: 3}
   healthChest: {fileID: 6853206009635058009, guid: 4f5289bea9695b543a6a66399d2f469d, type: 3}
+  chestTimer: 15
 --- !u!1 &975559081
 GameObject:
   m_ObjectHideFlags: 0
@@ -32259,7 +32262,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cce92e172de09184c99cb19939433adb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextScene: Main_2
+  nextScene: Map1
 --- !u!1001 &1567241988
 PrefabInstance:
   m_ObjectHideFlags: 0
