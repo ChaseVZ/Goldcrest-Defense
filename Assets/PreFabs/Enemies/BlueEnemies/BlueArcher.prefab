@@ -29410,7 +29410,7 @@ MonoBehaviour:
   health: 5
   healthBar: {fileID: 4178953852912190893}
   healEffect: {fileID: 347296841037366086, guid: 206822c1b8d71454ab22d7f20df89eaa, type: 3}
-  resourceEffect: {fileID: 5636404453237396490, guid: 3aae4372e146c944e8bfb232a4b9ab44, type: 3}
+  deathEffect: {fileID: 100672, guid: 75e9ca0386952ce469be42937b45cd23, type: 3}
   resource: 11
 --- !u!114 &366097990480361688
 MonoBehaviour:

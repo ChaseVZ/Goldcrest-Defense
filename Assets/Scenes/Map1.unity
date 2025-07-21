@@ -2326,6 +2326,7 @@ MonoBehaviour:
   Rmage: {fileID: 967050780561489517, guid: d35ded876e7f38d4fa5b713cdced0601, type: 3}
   timeBetweenWaves: 30
   initialCountdown: 60
+  miniBossWaveNumbers: 0f0000001e0000002d0000003c000000
   waveNumber: 0
   countdownText: {fileID: 1129841900}
   phase: {fileID: 389772162}
@@ -14469,7 +14470,7 @@ MonoBehaviour:
   playerView: {fileID: 261295198}
   mapView: {fileID: 996359401}
   mapOffset: {x: 0, y: 54.3, z: -34.9}
-  playerOffset: {x: 0, y: 45.25, z: -29.083334}
+  playerOffset: {x: 0, y: 25.5, z: -20.6}
 --- !u!81 &780781194
 AudioListener:
   m_ObjectHideFlags: 0

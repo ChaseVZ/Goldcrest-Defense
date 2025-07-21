@@ -23,7 +23,7 @@ public class ChestManager : MonoBehaviour
     private bool spawnedTutorial = false;
 
     public float chestTimer = 15f;
-    private int minWaveNumberToBeginChestSpawning = 5;
+    private int minWaveNumberToBeginChestSpawning = 1;
 
     public void Start()
     {
@@ -65,7 +65,7 @@ public class ChestManager : MonoBehaviour
         int indexToSpawnChest = Random.Range(0, max);
 
         // Number of Chests to Spawn (0 OR 1)
-        int numChestsToSpawn = Random.Range(0, 2);
+        int numChestsToSpawn = Random.Range(2, 2);
 
         if (numChestsToSpawn > 0)
         {

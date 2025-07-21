@@ -29310,7 +29310,7 @@ MonoBehaviour:
   health: 135
   healthBar: {fileID: 3215719548070675736}
   healEffect: {fileID: 347296841037366086, guid: 206822c1b8d71454ab22d7f20df89eaa, type: 3}
-  resourceEffect: {fileID: 5636404453237396490, guid: 3aae4372e146c944e8bfb232a4b9ab44, type: 3}
+  deathEffect: {fileID: 123640, guid: 44cd454e57b015b4cbedc1bc6503fd83, type: 3}
   resource: 14
 --- !u!114 &2935427190769256452
 MonoBehaviour:

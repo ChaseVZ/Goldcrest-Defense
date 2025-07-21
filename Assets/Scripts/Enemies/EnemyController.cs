@@ -13,7 +13,7 @@ public class EnemyController : MonoBehaviour
 
     public GameObject healEffect;
 
-    public GameObject resourceEffect;
+    public GameObject deathEffect;
 
     //How much resource a enemy will drop on death.
     public int resource;
@@ -23,6 +23,9 @@ public class EnemyController : MonoBehaviour
     private WaveSpawner waveSpawner;
 
     private Transform pos;
+    
+    private Vector3 deathEffectOffset = new Vector3(0, 1.5f, 0);
+    
     // called when this enemy is hit with projectile
     public void Hit(float strength)
     {
@@ -60,9 +63,9 @@ public class EnemyController : MonoBehaviour
             Quaternion qt = transform.rotation;
             qt.Set(0, -90, 0, 0);
 
-            // GameObject resourceEffectIns = (GameObject)Instantiate(resourceEffect, transform.position, qt);
-            // resourceEffectIns.GetComponent<ParticleSystem>().Play();
-            // Destroy(resourceEffectIns, 2f);
+            GameObject deathEffectIns = (GameObject)Instantiate(deathEffect, transform.position + deathEffectOffset, qt);
+            deathEffectIns.GetComponent<ParticleSystem>().Play();
+            Destroy(deathEffectIns, 2f);
 
             resourceManager.addResource(resource);
             waveSpawner.enemyDestroy();

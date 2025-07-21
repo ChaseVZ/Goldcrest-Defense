@@ -10032,7 +10032,7 @@ MonoBehaviour:
   health: 77
   healthBar: {fileID: 5268624810650013367}
   healEffect: {fileID: 347296841037366086, guid: 206822c1b8d71454ab22d7f20df89eaa, type: 3}
-  resourceEffect: {fileID: 5636404453237396490, guid: 3aae4372e146c944e8bfb232a4b9ab44, type: 3}
+  deathEffect: {fileID: 138338, guid: 771c80a6f5900824cb2ed3d751b1dfef, type: 3}
   resource: 13
 --- !u!114 &8188296889398151420
 MonoBehaviour:
