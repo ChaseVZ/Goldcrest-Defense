@@ -60,9 +60,9 @@ public class EnemyController : MonoBehaviour
             Quaternion qt = transform.rotation;
             qt.Set(0, -90, 0, 0);
 
-            GameObject resourceEffectIns = (GameObject)Instantiate(resourceEffect, transform.position, qt);
-            resourceEffectIns.GetComponent<ParticleSystem>().Play();
-            Destroy(resourceEffectIns, 2f);
+            // GameObject resourceEffectIns = (GameObject)Instantiate(resourceEffect, transform.position, qt);
+            // resourceEffectIns.GetComponent<ParticleSystem>().Play();
+            // Destroy(resourceEffectIns, 2f);
 
             resourceManager.addResource(resource);
             waveSpawner.enemyDestroy();

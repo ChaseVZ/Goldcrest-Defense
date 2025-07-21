@@ -243,7 +243,7 @@ public class Miniboss : MonoBehaviour
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
         foreach (GameObject enemy in enemies)
         {
-            if (Vector3.Distance(enemy.transform.position, currBoss.transform.position) <= 50f)
+            if (Vector3.Distance(enemy.transform.position, currBoss.transform.position) <= 150f)
             {
                 enemy.GetComponent<EnemyMovement>().fast(speedMagnitude, speedUpTime);
             }
@@ -529,6 +529,7 @@ public class Miniboss : MonoBehaviour
         universalAtk = false;
 
         waveSpawner.timeBetweenWaves += 10;
+        waveSpawner.setMinibossDefeated();
     }
 
     #endregion

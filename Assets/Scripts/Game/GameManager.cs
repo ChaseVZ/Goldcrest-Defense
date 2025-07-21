@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,9 +25,9 @@ public class GameManager : MonoBehaviour
 
     public bool tutorialMode = false;
     public bool blockUpgrades = false;
-    public bool buyPhase = false;
-    public bool atkPhase = false;
-    public bool bossPhase = false;
+    private bool buyPhase = true;
+    private bool atkPhase = false;
+    private bool bossRound = false;
 
     bool gameOver;
     [SerializeField] float fadeTime;
@@ -64,6 +65,8 @@ public class GameManager : MonoBehaviour
         waveSpawner = GameObject.FindGameObjectWithTag("GameManager").GetComponent<WaveSpawner>();
 
         gameOver = false;
+
+        buyModeBegin();
     }
 
     public void ShowTrader()
@@ -87,10 +90,10 @@ public class GameManager : MonoBehaviour
 
         buyPhase = true;
         atkPhase = false;
-        bossPhase = false;
+        bossRound = false;
 
         int waveNum = waveSpawner.getWaveNumber();
-        if (waveNum != 1 && !waveSpawner.getBossDefeated())
+        if (waveNum != 0 && waveNum != 1 && !waveSpawner.getBossDefeated())
         {
             waveWinChime.Play();
         }
@@ -113,16 +116,17 @@ public class GameManager : MonoBehaviour
 
     public void attackModeBegin()
     {
+        Debug.Log("Attack phase started");
         if (gameOver) { return; }
 
         int waveNumber = gameObject.GetComponent<WaveSpawner>().getWaveNumber();
 
         StopAllCoroutines();
         if (buyPhaseMusic.isPlaying) { StartCoroutine(StartFade(buyPhaseMusic, fadeTime-1f, 0f)); }
-        if (waveNumber == 15 || waveNumber == 30 || waveNumber == 45 || waveNumber == 60)
-        {
-            bossPhase = true;
-            atkPhase = false;
+        if (Array.Exists(waveSpawner.miniBossWaveNumbers, wave => wave == waveNumber))
+        { 
+            bossRound = true;
+            atkPhase = true;
             buyPhase = false;
 
             bossPhaseMusic.Play();
@@ -130,7 +134,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            bossPhase = false;
+            bossRound = false;
             atkPhase = true;
             buyPhase = false;
 
@@ -146,8 +150,8 @@ public class GameManager : MonoBehaviour
     {
         StopAllCoroutines();
         if (buyPhase) { buyPhaseMusic.volume = PlayerPrefs.GetFloat(musicVolume) * PlayerPrefs.GetFloat(masterVolume); }
-        else if (atkPhase) { attackPhaseMusic.volume = PlayerPrefs.GetFloat(musicVolume) * PlayerPrefs.GetFloat(masterVolume); }
-        else if (bossPhase) { bossPhaseMusic.volume = PlayerPrefs.GetFloat(musicVolume) * PlayerPrefs.GetFloat(masterVolume); } 
+        else if (atkPhase && !bossRound) { attackPhaseMusic.volume = PlayerPrefs.GetFloat(musicVolume) * PlayerPrefs.GetFloat(masterVolume); }
+        else if (bossRound) { bossPhaseMusic.volume = PlayerPrefs.GetFloat(musicVolume) * PlayerPrefs.GetFloat(masterVolume); } 
     }
 
     // add extra lives?
@@ -161,6 +165,11 @@ public class GameManager : MonoBehaviour
 
         gameOver = true;
     }
+
+    public bool getBossDefeated() { return waveSpawner.getBossDefeated(); }
+    public bool isInBuyPhase() { return buyPhase; }
+    public bool isInAttackPhase() { return atkPhase; }
+    public bool isInBossRound() { return bossRound; }
 
     /* FadeTime = seconds */
     public IEnumerator StartFade(AudioSource audioSource, float duration, float targetVolume)

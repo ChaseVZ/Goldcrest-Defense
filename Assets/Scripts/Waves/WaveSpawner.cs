@@ -51,17 +51,23 @@ public class WaveSpawner : MonoBehaviour
     private Transform spawnPoint5;
     private Transform spawnPoint6;
 
-    public float timeBetweenWaves = 20f;
+    public float timeBetweenWaves = 30f;
+    public float initialCountdown = 60f;
     float speedScalar = 1f;
     float prevAtkPhaseTimeScale = 1f;
+    public int[] miniBossWaveNumbers = {15, 30, 45, 60};
+    private int finalWaveNumber = 60;
 
     private float countdown = 0f;  /* til next wave spawns */
     [SerializeField] private int waveNumber = 1;
     private int enemyCounter = 0;
 
     private bool waveSpawnComplete = true;  /* all enemies that need to be spawned for the current wave, have been spawned (or not) */
-    private bool waveEnemiesComplete = true;  /* are all spawned enemies dead (killed/reached castle)? */
-    //private bool stopNextWave = true; /* multi-purpose flag | Potential uses: start of game; before boss fight waves; alchemist stuff */
+    private bool minibossDefeated = false; /* tracks if miniboss has been defeated */
+    private bool continuousSpawning = false; /* tracks if we're in continuous spawning mode during miniboss wave */
+    private bool waveCompletionScheduled = false; /* prevents multiple wave completion checks in the same frame */
+    private int pendingEnemyDestructions = 0; /* tracks how many enemies are being destroyed this frame */
+    private bool waveSpawnedThisPhase = false; /* prevents multiple wave spawns per attack phase (except continuous) */
 
     public TextMeshProUGUI countdownText;
     public TextMeshProUGUI phase;
@@ -76,8 +82,8 @@ public class WaveSpawner : MonoBehaviour
     private Color green = new Color32(55, 255, 0, 255);
     private Color red = new Color32(255, 0, 0, 255);
 
-    bool bossDefeated = false;
     [SerializeField] AbilityCutscene cutscenes;
+    private bool cutsceneActive = false;
 
     [SerializeField] GameObject x1_speed_button;
     [SerializeField] GameObject x2_speed_button;
@@ -113,16 +119,70 @@ public class WaveSpawner : MonoBehaviour
         spawnPoint4 = TrackWaypoints.points4[0];
         spawnPoint5 = TrackWaypoints.points5[0];
         spawnPoint6 = TrackWaypoints.points6[0];
-        countdown = 30f;
+        countdown = initialCountdown;
     }
 
     private void Update()
     {
-        checkWaveStatus();
+        if (countdown <= 0 && !GameManager.instance.isInAttackPhase())
+        {
+            GameManager.instance.attackModeBegin();
+            return;
+        }
+
+        // Countdown during buy phase
+        if (GameManager.instance.isInBuyPhase() && !cutsceneActive)
+        {
+            countdown -= Time.deltaTime;
+        }
 
         checkWaveStart();
-
         setUI();
+    }
+
+    // Miniboss counts towards enemy counter
+    private void checkWaveCompletion()
+    {
+        // Boss round win condition
+        if (GameManager.instance.isInBossRound() && GameManager.instance.isInAttackPhase() && minibossDefeated && enemyCounter <= 0)
+        {
+            cutsceneActive = true;
+            cutscenes.startCutscene();
+            GameManager.instance.buyModeBegin();
+            countdown = timeBetweenWaves;
+            if (waveNumber == finalWaveNumber + 1) { winCondition(); }
+            return;
+        }
+
+        // Normal wave win condition
+        if (enemyCounter <= 0 && !GameManager.instance.isInBossRound() && GameManager.instance.isInAttackPhase())
+        {
+            minibossDefeated = false;
+            GameManager.instance.buyModeBegin();
+            countdown = timeBetweenWaves;
+            if (waveNumber == finalWaveNumber + 1) { winCondition(); }
+        }
+    }
+
+    // determine if wave should commence
+    private void checkWaveStart()
+    {
+        if (GameManager.instance.isInBuyPhase() || waveCompletionScheduled) { return; }
+
+        // Handle continuous spawning during miniboss waves (after initial wave spawn)
+        if (GameManager.instance.isInBossRound() && GameManager.instance.isInAttackPhase() && waveSpawnedThisPhase && !minibossDefeated && waveSpawnComplete)
+        {
+            continuousSpawning = true;
+            waveSpawnComplete = false;
+            StartCoroutine(SpawnWave());
+        }
+        // Normal wave start (only if no wave has been spawned this phase)
+        else if (GameManager.instance.isInAttackPhase() && waveSpawnComplete && !waveSpawnedThisPhase)
+        {
+            waveSpawnComplete = false;
+            continuousSpawning = false; 
+            StartCoroutine(SpawnWave());
+        }
     }
 
     public void winCondition()
@@ -134,25 +194,47 @@ public class WaveSpawner : MonoBehaviour
     {
         speedScalar = 1f + ((0.05f) * (waveNumber % 10)); // oscilates from 1 - 1.45f 
 
-        // random number of groups, extra large wave every 10th wave
-        if (waveNumber == 15 || waveNumber == 30 || waveNumber == 45 || waveNumber == 60) { Miniboss.instance.spawnMiniboss(); enemyCounter++;}
+        // Stop spawning if miniboss has been defeated
+        if (GameManager.instance.isInBossRound() && minibossDefeated)
+        {
+            yield break;
+        }
 
+        // Spawn miniboss only on initial wave spawn, not during continuous spawning
+        if (Array.Exists(miniBossWaveNumbers, wave => wave == waveNumber) && !continuousSpawning)   
+        { 
+            minibossDefeated = false;
+            Miniboss.instance.spawnMiniboss(); 
+            enemyCounter++;
+        }
+
+        // Determine group count based on spawning mode
         Random groups = new Random();
         int groupCount;
-        int countmult = (int)(waveNumber / 10) * 3;
-        if ((waveNumber % 10) == 0)
+        
+        if (continuousSpawning)
         {
-            groupCount = groups.Next(4 + countmult,4 + countmult + waveNumber);
+            // Continuous spawning: smaller, more frequent waves
+            groupCount = groups.Next(1, 4); // 1-3 groups for continuous spawning
         }
         else
         {
-            groupCount = groups.Next(1 + countmult,1 + countmult + waveNumber);
-        }
+            // Normal wave spawning
+            int countmult = (int)(waveNumber / 10) * 3;
+            if ((waveNumber % 10) == 0)
+            {
+                groupCount = groups.Next(4 + countmult,4 + countmult + waveNumber);
+            }
+            else
+            {
+                groupCount = groups.Next(1 + countmult,1 + countmult + waveNumber);
+            }
 
-        // cap number of groups at 20
-        if (groupCount > 30)
-        {
-            groupCount = 30;
+            // cap number of groups at 30
+            if (groupCount > 30)
+            {
+                groupCount = 30;
+            }
         }
 
         enemyCounter += groupCount * 4;
@@ -190,6 +272,10 @@ public class WaveSpawner : MonoBehaviour
 
         // done with coroutine
         waveSpawnComplete = true;
+        if (!continuousSpawning)
+        {
+            waveSpawnedThisPhase = true; // Only set flag for initial wave spawn, not continuous spawning
+        }
     }
 
     private void SpawnEnemy(int type, int waveNumber)
@@ -310,19 +396,18 @@ public class WaveSpawner : MonoBehaviour
     private void setUI()
     {
         countdownText.text = Mathf.Round(countdown).ToString();
-        enemiesLeft.text = "Enemies Left: " + enemyCounter;
+        enemiesLeft.text = GameManager.instance.isInBossRound() ? "Defeat Miniboss!" : "Enemies Left: " + enemyCounter;
         waveCounter.text = "Wave: " + waveNumber.ToString();
 
-        if (waveSpawnComplete && waveEnemiesComplete && !buyUIisSetup)
+        if (GameManager.instance.isInBuyPhase() && !buyUIisSetup)
         {
             waveNumber++;
-            if (waveNumber == 15 || waveNumber == 30 || waveNumber == 45 || waveNumber == 60)
+            if (Array.Exists(miniBossWaveNumbers, wave => wave == waveNumber))
             {
                 bossNextWave.gameObject.SetActive(true);
                 bossNextWave.color = red;
             }
             skipBuyPhaseButton.gameObject.SetActive(true);
-            GameManager.instance.buyModeBegin();
             phase.text = "Buy Phase";
             phase.color = green;
             enemiesLeft.color = green;
@@ -330,6 +415,7 @@ public class WaveSpawner : MonoBehaviour
             countdownText.gameObject.SetActive(true);
             buyUIisSetup = true;
             atkUIisSetup = false;
+            waveSpawnedThisPhase = false; // Reset wave spawn flag when buy phase begins
 
             prevAtkPhaseTimeScale = Time.timeScale;
             Time.timeScale = 1f;
@@ -337,11 +423,10 @@ public class WaveSpawner : MonoBehaviour
             x1_speed_button.SetActive(false);
             
         }
-        else if (!waveSpawnComplete && !waveEnemiesComplete && !atkUIisSetup)
+        else if (GameManager.instance.isInAttackPhase() && !atkUIisSetup)
         {
             bossNextWave.gameObject.SetActive(false);
             skipBuyPhaseButton.gameObject.SetActive(false);
-            GameManager.instance.attackModeBegin();
             phase.text = "Attack Phase";
             phase.color = red;
             enemiesLeft.color = red;
@@ -362,57 +447,27 @@ public class WaveSpawner : MonoBehaviour
         }
     }
 
-    private void checkWaveStatus()
-    {
-        // check if all spawned enemies died/finished course
-        if (enemyCounter == 0)
-        {
-            waveEnemiesComplete = true;
-        }
-        else
-        {
-            waveEnemiesComplete = false;
-        }
-
-        // only countdown once wave spawning & killing is done
-        if (waveSpawnComplete && waveEnemiesComplete)
-        {
-            if (bossDefeated) { cutscenes.startCutscene(); }
-            else { countdown -= Time.deltaTime; }
-            
-            if (waveNumber == 61) { winCondition(); }
-        }
-    }
-
-    // determine if wave should commence
-    private void checkWaveStart()
-    {
-        // wave begin
-        if (countdown <= 0 && waveSpawnComplete && waveEnemiesComplete)
-        {
-            countdown = timeBetweenWaves;
-            waveSpawnComplete = false;
-            waveEnemiesComplete = false;
-            StartCoroutine(SpawnWave());
-        }
-    }
-
-    public bool getWaveStatus() { return waveEnemiesComplete; }
     public int getWaveNumber() { return waveNumber; }
-
     public void setWaveNumber(int num) { this.waveNumber = num; }
-
     public void setEnemyCounter(int num) { this.enemyCounter = num;  }
-
-    public void forceNextWaveBuy()
+    public bool getBossDefeated() { return minibossDefeated; }
+    public void setMinibossDefeated()
+    {
+        minibossDefeated = true;
+    }
+    public void setCutsceneInActive()
+    {
+        cutsceneActive = false;
+    }
+    public void forceNextWaveBuy() // God Mode feature ONLY
     {
         countdown = timeBetweenWaves;
-        if (waveSpawnComplete && waveEnemiesComplete)
+        if (waveSpawnComplete && GameManager.instance.isInBuyPhase())
         {
             waveNumber++;
         }
         waveSpawnComplete = true;
-        waveEnemiesComplete = true;
+        continuousSpawning = false; 
         StopAllCoroutines();
     }
 
@@ -420,21 +475,35 @@ public class WaveSpawner : MonoBehaviour
     {
         if (enemyCounter > 0)
         {
-            enemyCounter = enemyCounter - 1;
+            enemyCounter--;
         }
+        
+        pendingEnemyDestructions++;
+        
+        // Only schedule wave completion check if not already scheduled
+        if (!waveCompletionScheduled)
+        {
+            waveCompletionScheduled = true;
+            StartCoroutine(EndOfFrameWaveCompletionCheck());
+        }
+    }
+
+    private IEnumerator EndOfFrameWaveCompletionCheck()
+    {
+        // Wait until the end of the current frame to process all enemy destructions
+        yield return new WaitForEndOfFrame();
+
+        // Reset the pending count and flag
+        pendingEnemyDestructions = 0;
+        waveCompletionScheduled = false;
+        
+        // Now check wave completion with the final enemy count
+        checkWaveCompletion();
     }
 
     public void skipBuyPhase()
     {
         countdown = 0;
+        GameManager.instance.attackModeBegin();
     }
-
-
-    public void setBossDefeated(bool setter)
-    {
-        bossDefeated = setter;
-    }
-
-    public bool getBossDefeated() { return bossDefeated; }
-
 }

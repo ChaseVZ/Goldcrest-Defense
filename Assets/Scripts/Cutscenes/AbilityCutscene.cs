@@ -39,7 +39,6 @@ public class AbilityCutscene : MonoBehaviour
         activeScene = 1;
         RayAnimator = ability1_scene.transform.GetChild(0).GetComponent<Animator>();
         CrystalAnimator = ability1_scene.transform.GetChild(1).GetComponent<Animator>();
-        waveSpawner.setBossDefeated(true);
     }
 
     public void unlocked2()
@@ -47,7 +46,6 @@ public class AbilityCutscene : MonoBehaviour
         activeScene = 2;
         RayAnimator = ability2_scene.transform.GetChild(0).GetComponent<Animator>();
         CrystalAnimator = ability2_scene.transform.GetChild(1).GetComponent<Animator>();
-        waveSpawner.setBossDefeated(true);
     }
 
     public void unlocked3()
@@ -55,7 +53,6 @@ public class AbilityCutscene : MonoBehaviour
         activeScene = 3;
         RayAnimator = ability3_scene.transform.GetChild(0).GetComponent<Animator>();
         CrystalAnimator = ability3_scene.transform.GetChild(1).GetComponent<Animator>();
-        waveSpawner.setBossDefeated(true);
     }
 
     public void startCutscene()
@@ -101,7 +98,7 @@ public class AbilityCutscene : MonoBehaviour
 
     public void _exitCutscene()
     {
-        waveSpawner.setBossDefeated(false);
+        waveSpawner.setCutsceneInActive();
         _unloadCutscene();
         cutsceneActive = false;
     }

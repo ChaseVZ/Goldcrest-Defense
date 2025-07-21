@@ -12,7 +12,6 @@ public class MortarTower : MonoBehaviour, ITower
     public float gravity = -30;
     public float time = 1f;
     public bool enable;
-    private bool wave = false;
 
     public float splashRadius = 5f; // SET IN PREFAB
 
@@ -58,18 +57,13 @@ public class MortarTower : MonoBehaviour, ITower
     }
 
     void Update()
-    {
-        if (gameManager != null && !GameManager.instance.tutorialMode)
-        {
-            wave = gameManager.GetComponent<WaveSpawner>().getWaveStatus();
-        }
-        
+    {        
         if (target == null)
         {
             return;
         }
 
-        if (fireCountdown <= 0f && enable && !wave && !GameManager.instance.tutorialMode)
+        if (fireCountdown <= 0f && enable && GameManager.instance.isInAttackPhase() && !GameManager.instance.tutorialMode)
         {
             Shoot();
             fireCountdown = 1 / fireRate;

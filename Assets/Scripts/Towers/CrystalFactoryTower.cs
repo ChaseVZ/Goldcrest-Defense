@@ -64,7 +64,7 @@ public class CrystalFactoryTower : MonoBehaviour, ITower
         bool isBuy = false;
         if (!GameManager.instance.tutorialMode)
         {
-            isBuy = waveSpawner.getWaveStatus();
+            isBuy = GameManager.instance.isInBuyPhase();
         }
 
 

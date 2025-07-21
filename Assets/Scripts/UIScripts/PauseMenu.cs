@@ -19,7 +19,7 @@ public class PauseMenu : MonoBehaviour
     private ResourceManager rm;
     private TownHealth th;
 
-    bool godMode = false;
+    public bool godMode = false;
     bool changeColor = true;
     bool showGodMode = false;
     int[] konami_code = {273, 273, 274, 274, 276, 275, 276, 275, 97, 98, 13};
