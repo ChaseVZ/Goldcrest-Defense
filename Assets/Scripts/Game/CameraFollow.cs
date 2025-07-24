@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class CameraFollow : MonoBehaviour 
 {
@@ -15,6 +16,12 @@ public class CameraFollow : MonoBehaviour
         //if (Input.GetMouseButtonDown(1))
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            // Deselect any focused UI element to prevent button activation
+            if (EventSystem.current != null && EventSystem.current.currentSelectedGameObject != null)
+            {
+                EventSystem.current.SetSelectedGameObject(null);
+            }
+            
             if (view) 
             {
                 view = false;

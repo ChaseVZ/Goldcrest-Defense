@@ -2300,43 +2300,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8c541cd3f3f3694f877d9511b541eea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Pspearman: {fileID: 5691266663294265151, guid: a8577cc9a4069b040a51ad759ed3a1ce, type: 3}
-  Pknight: {fileID: 1298788387727648240, guid: 997c58b28f9fc0c4da14fdabca6f2ea0, type: 3}
-  Parcher: {fileID: 5244692493334797527, guid: 9c3c99228bc70cf4b8e92b35b2e511e0, type: 3}
-  Pmage: {fileID: 1125273769435896626, guid: 32afd58fe1637d24ba2fd0d671631e44, type: 3}
-  Bspearman: {fileID: 1440027413551583013, guid: e3a6ad32bd557b04cb0cec93a6b0f50a, type: 3}
-  Bknight: {fileID: 366927560016112679, guid: 14fb7925ca4a3924bafc7d9824b9dfe2, type: 3}
-  Barcher: {fileID: 9003570815358043853, guid: b71883c31a4aa7744b75eaa6883cfb34, type: 3}
-  Bmage: {fileID: 6119901698139172632, guid: c290e5beed4bbd648ada1620c4200d54, type: 3}
-  Gspearman: {fileID: 1361450034778192803, guid: da45135524c977b4084fac6e8c33ddb3, type: 3}
-  Gknight: {fileID: 237624375449092545, guid: af89145fc3e861647afc7f97beb14ba8, type: 3}
-  Garcher: {fileID: 4721505569107456809, guid: fd10b30b2164bb141a5ad510580d7bfe, type: 3}
-  Gmage: {fileID: 2625096681129051003, guid: 517fc9b1fe3bf2b49a1f25a7fb947243, type: 3}
-  Yspearman: {fileID: 5228566651650408731, guid: 87202d6c111f62d49a8542269313f10f, type: 3}
-  Yknight: {fileID: 1871587477374145334, guid: aff6aeb61957cc64b8388cfa331d57e6, type: 3}
-  Yarcher: {fileID: 1995222676350826392, guid: 2d94da63e7afd094a9304aa3e7ddb373, type: 3}
-  Ymage: {fileID: 8995558357666474951, guid: 227b406b6f5ccad49abbfeb5d9eb7547, type: 3}
-  Ospearman: {fileID: 1899682243885025672, guid: a4966f8fe5ae82b42abc5e5f2051d1ce, type: 3}
-  Oknight: {fileID: 3961417608222085278, guid: 577df4024a797694ebd886a4f52decee, type: 3}
-  Oarcher: {fileID: 8877601109743864911, guid: 83f00bc62943a0846a583f49a63399fe, type: 3}
-  Omage: {fileID: 8284205860768521735, guid: 921b9e67e1e2b6b4ead046ca20ff5921, type: 3}
-  Rspearman: {fileID: 5061149896126084314, guid: f4ac45f891d9bf24ba47bf006e36e5f1, type: 3}
-  Rknight: {fileID: 482737765587602316, guid: 9564dc0eb9659fb4e83d169b16e30ac8, type: 3}
-  Rarcher: {fileID: 2183537339261917003, guid: 15cacf311b3d5c84ba218412dd7605a1, type: 3}
-  Rmage: {fileID: 967050780561489517, guid: d35ded876e7f38d4fa5b713cdced0601, type: 3}
-  timeBetweenWaves: 30
-  initialCountdown: 60
+  purpleEnemies:
+    spearman: {fileID: 5691266663294265151, guid: a8577cc9a4069b040a51ad759ed3a1ce, type: 3}
+    knight: {fileID: 1298788387727648240, guid: 997c58b28f9fc0c4da14fdabca6f2ea0, type: 3}
+    archer: {fileID: 5244692493334797527, guid: 9c3c99228bc70cf4b8e92b35b2e511e0, type: 3}
+    mage: {fileID: 1125273769435896626, guid: 32afd58fe1637d24ba2fd0d671631e44, type: 3}
+  blueEnemies:
+    spearman: {fileID: 1440027413551583013, guid: e3a6ad32bd557b04cb0cec93a6b0f50a, type: 3}
+    knight: {fileID: 366927560016112679, guid: 14fb7925ca4a3924bafc7d9824b9dfe2, type: 3}
+    archer: {fileID: 9003570815358043853, guid: b71883c31a4aa7744b75eaa6883cfb34, type: 3}
+    mage: {fileID: 6119901698139172632, guid: c290e5beed4bbd648ada1620c4200d54, type: 3}
+  greenEnemies:
+    spearman: {fileID: 1361450034778192803, guid: da45135524c977b4084fac6e8c33ddb3, type: 3}
+    knight: {fileID: 237624375449092545, guid: af89145fc3e861647afc7f97beb14ba8, type: 3}
+    archer: {fileID: 4721505569107456809, guid: fd10b30b2164bb141a5ad510580d7bfe, type: 3}
+    mage: {fileID: 2625096681129051003, guid: 517fc9b1fe3bf2b49a1f25a7fb947243, type: 3}
+  yellowEnemies:
+    spearman: {fileID: 5228566651650408731, guid: 87202d6c111f62d49a8542269313f10f, type: 3}
+    knight: {fileID: 1871587477374145334, guid: aff6aeb61957cc64b8388cfa331d57e6, type: 3}
+    archer: {fileID: 1995222676350826392, guid: 2d94da63e7afd094a9304aa3e7ddb373, type: 3}
+    mage: {fileID: 8995558357666474951, guid: 227b406b6f5ccad49abbfeb5d9eb7547, type: 3}
+  orangeEnemies:
+    spearman: {fileID: 1899682243885025672, guid: a4966f8fe5ae82b42abc5e5f2051d1ce, type: 3}
+    knight: {fileID: 3961417608222085278, guid: 577df4024a797694ebd886a4f52decee, type: 3}
+    archer: {fileID: 8877601109743864911, guid: 83f00bc62943a0846a583f49a63399fe, type: 3}
+    mage: {fileID: 8284205860768521735, guid: 921b9e67e1e2b6b4ead046ca20ff5921, type: 3}
+  redEnemies:
+    spearman: {fileID: 5061149896126084314, guid: f4ac45f891d9bf24ba47bf006e36e5f1, type: 3}
+    knight: {fileID: 482737765587602316, guid: 9564dc0eb9659fb4e83d169b16e30ac8, type: 3}
+    archer: {fileID: 2183537339261917003, guid: 15cacf311b3d5c84ba218412dd7605a1, type: 3}
+    mage: {fileID: 967050780561489517, guid: d35ded876e7f38d4fa5b713cdced0601, type: 3}
+  spawnPoints: []
+  timeBetweenWaves: 60
+  initialCountdown: 100
   miniBossWaveNumbers: 0f0000001e0000002d0000003c000000
-  waveNumber: 0
+  finalWaveNumber: 60
   countdownText: {fileID: 1129841900}
-  phase: {fileID: 389772162}
-  enemiesLeft: {fileID: 399440419}
-  waveCounter: {fileID: 288491711}
-  bossNextWave: {fileID: 1501413544}
+  phaseText: {fileID: 389772162}
+  enemiesLeftText: {fileID: 399440419}
+  waveCounterText: {fileID: 288491711}
+  bossNextWaveText: {fileID: 1501413544}
   skipBuyPhaseButton: {fileID: 108821503}
+  x1SpeedButton: {fileID: 1590641826}
+  x2SpeedButton: {fileID: 722717267}
   cutscenes: {fileID: 77953254}
-  x1_speed_button: {fileID: 1590641826}
-  x2_speed_button: {fileID: 722717267}
   winScreen: {fileID: 2115985319}
 --- !u!114 &77953254
 MonoBehaviour:
@@ -3480,7 +3487,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 77953253}
         m_TargetAssemblyTypeName: WaveSpawner, Assembly-CSharp
-        m_MethodName: skipBuyPhase
+        m_MethodName: SkipBuyPhase
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10613,7 +10620,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: x1 speed
+  m_text: x2 speed
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bac635b972571c449b221d610fdbbc9d, type: 2}
   m_sharedMaterial: {fileID: -2564630247882976815, guid: bac635b972571c449b221d610fdbbc9d, type: 2}
@@ -19759,7 +19766,7 @@ MonoBehaviour:
   toggle: {fileID: 1641796256}
   sprite: {fileID: 1497927054}
   skipWave: {fileID: 326417125}
-  godMode: 1
+  godMode: 0
 --- !u!114 &1007185230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44702,7 +44709,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: x2 speed
+  m_text: x1 speed
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bac635b972571c449b221d610fdbbc9d, type: 2}
   m_sharedMaterial: {fileID: -2564630247882976815, guid: bac635b972571c449b221d610fdbbc9d, type: 2}

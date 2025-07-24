@@ -521,15 +521,15 @@ public class Miniboss : MonoBehaviour
 
         deathAudio.Play();
 
-        waveSpawner.enemyDestroy();
+        waveSpawner.EnemyDestroy();
         healthBarGO.gameObject.SetActive(false);
 
         resourceManager.addResource(moneyDrops[bossNum - 1]);
 
         universalAtk = false;
 
-        waveSpawner.timeBetweenWaves += 10;
-        waveSpawner.setMinibossDefeated();
+        waveSpawner.AddTimeBetweenWaves(10f);
+        waveSpawner.SetMinibossDefeated();
     }
 
     #endregion

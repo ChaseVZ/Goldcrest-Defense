@@ -68,7 +68,7 @@ public class EnemyController : MonoBehaviour
             Destroy(deathEffectIns, 2f);
 
             resourceManager.addResource(resource);
-            waveSpawner.enemyDestroy();
+            waveSpawner.EnemyDestroy();
             Destroy(gameObject);
             
         }

@@ -92,8 +92,8 @@ public class GameManager : MonoBehaviour
         atkPhase = false;
         bossRound = false;
 
-        int waveNum = waveSpawner.getWaveNumber();
-        if (waveNum != 0 && waveNum != 1 && !waveSpawner.getBossDefeated())
+        int waveNum = waveSpawner.GetWaveNumber();
+        if (waveNum != 0 && waveNum != 1 && !waveSpawner.GetBossDefeated())
         {
             waveWinChime.Play();
         }
@@ -116,14 +116,13 @@ public class GameManager : MonoBehaviour
 
     public void attackModeBegin()
     {
-        Debug.Log("Attack phase started");
         if (gameOver) { return; }
 
-        int waveNumber = gameObject.GetComponent<WaveSpawner>().getWaveNumber();
+        int waveNumber = gameObject.GetComponent<WaveSpawner>().GetWaveNumber();
 
         StopAllCoroutines();
         if (buyPhaseMusic.isPlaying) { StartCoroutine(StartFade(buyPhaseMusic, fadeTime-1f, 0f)); }
-        if (Array.Exists(waveSpawner.miniBossWaveNumbers, wave => wave == waveNumber))
+        if (Array.Exists(waveSpawner.MiniBossWaveNumbers, wave => wave == waveNumber))
         { 
             bossRound = true;
             atkPhase = true;
@@ -166,7 +165,7 @@ public class GameManager : MonoBehaviour
         gameOver = true;
     }
 
-    public bool getBossDefeated() { return waveSpawner.getBossDefeated(); }
+    public bool getBossDefeated() { return waveSpawner.GetBossDefeated(); }
     public bool isInBuyPhase() { return buyPhase; }
     public bool isInAttackPhase() { return atkPhase; }
     public bool isInBossRound() { return bossRound; }
@@ -186,6 +185,6 @@ public class GameManager : MonoBehaviour
         yield break;
     }
     
-    public void x2_speed() { Time.timeScale = 2f; x2_speed_button.SetActive(false); x1_speed_button.SetActive(true); }
-    public void x1_speed() { Time.timeScale = 1f; x1_speed_button.SetActive(false); x2_speed_button.SetActive(true); }
+    public void x1_speed() { Time.timeScale = 2f; x1_speed_button.SetActive(false); x2_speed_button.SetActive(true); }
+    public void x2_speed() { Time.timeScale = 1f; x1_speed_button.SetActive(true); x2_speed_button.SetActive(false); }
 }

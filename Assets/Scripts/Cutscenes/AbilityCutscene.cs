@@ -98,7 +98,7 @@ public class AbilityCutscene : MonoBehaviour
 
     public void _exitCutscene()
     {
-        waveSpawner.setCutsceneInActive();
+        waveSpawner.SetCutsceneInActive();
         _unloadCutscene();
         cutsceneActive = false;
     }

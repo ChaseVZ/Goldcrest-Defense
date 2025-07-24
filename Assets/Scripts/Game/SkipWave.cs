@@ -19,12 +19,16 @@ public class SkipWave : MonoBehaviour
             Destroy(e);
         }
 
-        //Set enemies to 0
-        ws.setEnemyCounter(0);
+        
+        GameObject[] allMinibosses = GameObject.FindGameObjectsWithTag("Miniboss");
+        foreach (GameObject m in allMinibosses)
+        {
+            Destroy(m);
+        }
 
         //StopAllCoroutines();
 
-        ws.forceNextWaveBuy();
+        ws.ForceNextWaveBuy();
         //Go to next wave
         //StartCoroutine(ws.SpawnWave());
     }

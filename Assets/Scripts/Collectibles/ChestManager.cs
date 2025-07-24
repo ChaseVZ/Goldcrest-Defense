@@ -23,7 +23,7 @@ public class ChestManager : MonoBehaviour
     private bool spawnedTutorial = false;
 
     public float chestTimer = 15f;
-    private int minWaveNumberToBeginChestSpawning = 1;
+    private int minWaveNumberToBeginChestSpawning = 5;
 
     public void Start()
     {
@@ -32,7 +32,7 @@ public class ChestManager : MonoBehaviour
     }
     public void Update()
     {
-        if (phaseText.text == "Attack Phase" && !spawned && GetComponent<WaveSpawner>().getWaveNumber() >= minWaveNumberToBeginChestSpawning)
+        if (phaseText.text == "Attack Phase" && !spawned && GetComponent<WaveSpawner>().GetWaveNumber() >= minWaveNumberToBeginChestSpawning)
         {
             GenerateResourceChests();
             spawned = true;
@@ -65,7 +65,7 @@ public class ChestManager : MonoBehaviour
         int indexToSpawnChest = Random.Range(0, max);
 
         // Number of Chests to Spawn (0 OR 1)
-        int numChestsToSpawn = Random.Range(2, 2);
+        int numChestsToSpawn = Random.Range(0, 2);
 
         if (numChestsToSpawn > 0)
         {

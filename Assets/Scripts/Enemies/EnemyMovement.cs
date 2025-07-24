@@ -101,7 +101,7 @@ public class EnemyMovement : MonoBehaviour
             if (Vector3.Distance(transform.position, target.position) <= 0.5f)
             {
                 townHealth.TakeDamage(attackDamage);
-                waveSpawner.enemyDestroy();
+                waveSpawner.EnemyDestroy();
                 Destroy(gameObject);
                 return;
             }
@@ -146,7 +146,7 @@ public class EnemyMovement : MonoBehaviour
         // once object reaches last waypoint
         if (wavepointIndex >= TrackWaypoints.points1.Length - 1)
         {
-            waveSpawner.enemyDestroy();
+            waveSpawner.EnemyDestroy();
             townHealth.TakeDamage(attackDamage);
             Destroy(gameObject);
             return;
